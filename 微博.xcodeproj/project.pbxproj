@@ -28,6 +28,7 @@
 		7DC486B41AA584C500A075F4 /* statuses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DC486B31AA584C500A075F4 /* statuses.plist */; };
 		7DC486B71AA585DA00A075F4 /* NJWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DC486B61AA585DA00A075F4 /* NJWeibo.m */; };
 		7DDDCA2D1AA5921F00FA0EEE /* JHWeiboCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DDDCA2C1AA5921F00FA0EEE /* JHWeiboCell.m */; };
+		7DDDCA301AA5C69100FA0EEE /* JHWeiboFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DDDCA2F1AA5C69100FA0EEE /* JHWeiboFrame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		7DC486B61AA585DA00A075F4 /* NJWeibo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NJWeibo.m; sourceTree = "<group>"; };
 		7DDDCA2B1AA5921F00FA0EEE /* JHWeiboCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHWeiboCell.h; sourceTree = "<group>"; };
 		7DDDCA2C1AA5921F00FA0EEE /* JHWeiboCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHWeiboCell.m; sourceTree = "<group>"; };
+		7DDDCA2E1AA5C69100FA0EEE /* JHWeiboFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHWeiboFrame.h; sourceTree = "<group>"; };
+		7DDDCA2F1AA5C69100FA0EEE /* JHWeiboFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHWeiboFrame.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,8 @@
 				7DC4867B1AA581FB00A075F4 /* ViewController.m */,
 				7DDDCA2B1AA5921F00FA0EEE /* JHWeiboCell.h */,
 				7DDDCA2C1AA5921F00FA0EEE /* JHWeiboCell.m */,
+				7DDDCA2E1AA5C69100FA0EEE /* JHWeiboFrame.h */,
+				7DDDCA2F1AA5C69100FA0EEE /* JHWeiboFrame.m */,
 				7DC4867D1AA581FB00A075F4 /* Main.storyboard */,
 				7DC486801AA581FB00A075F4 /* Images.xcassets */,
 				7DC486821AA581FB00A075F4 /* LaunchScreen.xib */,
@@ -295,6 +300,7 @@
 			files = (
 				7DC4867C1AA581FB00A075F4 /* ViewController.m in Sources */,
 				7DDDCA2D1AA5921F00FA0EEE /* JHWeiboCell.m in Sources */,
+				7DDDCA301AA5C69100FA0EEE /* JHWeiboFrame.m in Sources */,
 				7DC486791AA581FB00A075F4 /* AppDelegate.m in Sources */,
 				7DC486B71AA585DA00A075F4 /* NJWeibo.m in Sources */,
 				7DC486761AA581FB00A075F4 /* main.m in Sources */,

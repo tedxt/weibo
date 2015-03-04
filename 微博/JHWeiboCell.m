@@ -8,6 +8,7 @@
 
 #import "JHWeiboCell.h"
 #import "NJWeibo.h"
+#import "JHWeiboFrame.h"
 
 #define JHNameFont [UIFont systemFontOfSize:15]
 #define JHTextFont [UIFont systemFontOfSize:16]
@@ -39,6 +40,19 @@
 
 @implementation JHWeiboCell
 
+
++(instancetype)cellWithTableView:(UITableView *)tableView
+{
+    // NSLog(@"cellForRowAtIndexPath");
+    static NSString *identifier = @"status";
+    // 1.缓存中取
+    JHWeiboCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    // 2.创建
+    if (cell == nil) {
+        cell = [[JHWeiboCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    return cell;
+}
 
 /**
  *  构造方法(在初始化对象的时候会调用)
@@ -85,9 +99,9 @@
     return self;
 }
 
--(void)setWeibo:(NJWeibo *)weibo
+-(void)setWeiboFrame:(JHWeiboFrame *)weiboFrame
 {
-    _weibo = weibo;
+    _weiboFrame = weiboFrame;
     
     // 1.给子控件赋值数据
     [self settingData];
@@ -100,13 +114,15 @@
  */
 -(void)settingData
 {
+    NJWeibo *weibo = self.weiboFrame.weibo;
+    
     // 设置头像
-    self.iconView.image = [UIImage imageNamed:_weibo.icon];
+    self.iconView.image = [UIImage imageNamed:weibo.icon];
     // 设置昵称
-    self.nameLabel.text = _weibo.name;
+    self.nameLabel.text = weibo.name;
     
     // 设置vip
-    if (_weibo.vip) {
+    if (weibo.vip) {
         self.vipView.hidden = NO;
         self.nameLabel.textColor = [UIColor redColor];
     }else{
@@ -115,11 +131,11 @@
     }
     
     // 设置内容
-    self.introLabel.text = _weibo.text;
+    self.introLabel.text = weibo.text;
     
     // 设置配图
-    if (_weibo.picture) {
-        self.pictureView.image = [UIImage imageNamed:_weibo.picture];
+    if (weibo.picture) {
+        self.pictureView.image = [UIImage imageNamed:weibo.picture];
         self.pictureView.hidden = NO;
     }else{
         self.pictureView.hidden = YES;
@@ -132,67 +148,23 @@
  */
 -(void)settingFrame
 {
-    // 间隙
-    CGFloat padding = 10;
     // 设置头像的frame
-    CGFloat iconViewX = padding;
-    CGFloat iconViewY = padding;
-    CGFloat iconViewW = 30;
-    CGFloat iconViewH = 30;
-    self.iconView.frame = CGRectMake(iconViewX, iconViewY, iconViewW, iconViewH);
-    // 设置昵称的frame
-    // 昵称的x = 头像最大的x + 间隙
-    CGFloat nameLabelX = CGRectGetMaxX(self.iconView.frame) + padding;
-    // 计算文字的宽高
+    self.iconView.frame = self.weiboFrame.iconF;
     
-    CGSize nameSize = [self sizeWithString:_weibo.name font:JHNameFont maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
-    CGFloat nameLabelH = nameSize.height;
-    CGFloat nameLabelW = nameSize.width;
-    CGFloat nameLabelY = iconViewY + (iconViewH - nameLabelH) * 0.5;
-    self.nameLabel.frame = CGRectMake(nameLabelX, nameLabelY, nameLabelW, nameLabelH);
-
+    // 设置昵称的frame
+    self.nameLabel.frame = self.weiboFrame.nameF;
+    
     // 设置vip的frame
-    CGFloat vipViewX = CGRectGetMaxX(self.nameLabel.frame) + padding;
-    CGFloat vipViewY = nameLabelY;
-    CGFloat vipViewW = 14;
-    CGFloat vipViewH = 14;
-    self.vipView.frame = CGRectMake(vipViewX, vipViewY, vipViewW, vipViewH);
+    self.vipView.frame = self.weiboFrame.vipF;
     
     // 设置正文的frame
-    CGFloat introLabelX = iconViewX;
-    CGFloat introLabelY = CGRectGetMaxY(self.iconView.frame) + padding;
-    CGSize textSize =  [self sizeWithString:_weibo.text font:JHTextFont maxSize:CGSizeMake(300, MAXFLOAT)];
+    self.introLabel.frame = self.weiboFrame.introF;
     
-    CGFloat introLabelW = textSize.width;
-    CGFloat introLabelH = textSize.height;
-
-    self.introLabel.frame = CGRectMake(introLabelX, introLabelY, introLabelW, introLabelH);
-//    // 设置配图的frame
-//    if (_weibo.picture) {// 有配图
-//        CGFloat pictureViewX = iconViewX;
-//        CGFloat pictureViewY = CGRectGetMaxY(self.introLabel.frame) + padding;
-//        CGFloat pictureViewW = 200;
-//        CGFloat pictureViewH = 200;
-//        self.pictureView.frame = CGRectMake(pictureViewX, pictureViewY, pictureViewW, pictureViewH);
-//    }
-}
-
-/**
- *  计算文本的宽高
- *
- *  @param str     需要计算的文本
- *  @param font    文本显示的字体
- *  @param maxSize 文本显示的范围
- *
- *  @return 文本占用的真实宽高
- */
--(CGSize) sizeWithString:(NSString *)str font:(UIFont *) font maxSize:(CGSize)maxSize
-{
-    NSDictionary *dict = @{NSFontAttributeName : font};
-    // 如果将来计算的文字的范围超出了指定的范围,返回的就是指定的范围
-    // 如果将来计算的文字的范围小于指定的范围, 返回的就是真实的范围
-    CGSize size =  [str boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil].size;
-    return size;
+    // 设置配图的frame
+    
+    if (self.weiboFrame.weibo.picture) {// 有配图
+        self.pictureView.frame = self.weiboFrame.pictrueF;
+    }
 }
 
 

@@ -9,10 +9,11 @@
 #import "ViewController.h"
 #import "NJWeibo.h"
 #import "JHWeiboCell.h"
+#import "JHWeiboFrame.h"
 
 @interface ViewController ()
 
-@property (strong , nonatomic) NSArray *statuses;
+@property (strong , nonatomic) NSArray *statusFrames;
 
 
 @end
@@ -32,22 +33,15 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.statuses.count;
+    return self.statusFrames.count;
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"status";
-    // 1.缓存中取
-    JHWeiboCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    // 2.创建
-    if (cell == nil) {
-        // 系统的cell创建出来默认就有3个子控件提供给我们使用
-        cell = [[JHWeiboCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
+    JHWeiboCell *cell = [JHWeiboCell cellWithTableView:tableView];
     
     // 3.设置数据
-    cell.weibo = self.statuses[indexPath.row];
+    cell.weiboFrame = self.statusFrames[indexPath.row];
     
     // 4.返回
     return cell;
@@ -55,19 +49,34 @@
 }
 
 #pragma mark - 懒加载
-- (NSArray *)statuses
+- (NSArray *)statusFrames
 {
-    if (_statuses == nil) {
+    if (_statusFrames == nil) {
         NSString *fullPath = [[NSBundle mainBundle] pathForResource:@"statuses.plist" ofType:nil];
         NSArray *dictArray = [NSArray arrayWithContentsOfFile:fullPath];
         NSMutableArray *models = [NSMutableArray arrayWithCapacity:dictArray.count];
         for (NSDictionary *dict in dictArray) {
+            // 创建模型
             NJWeibo *weibo = [NJWeibo weiboWithDict:dict];
-            [models addObject:weibo];
+            // 根据模型数据创建frame模型
+            JHWeiboFrame *wbF = [[JHWeiboFrame alloc] init];
+            wbF.weibo = weibo;
+            [models addObject:wbF];
         }
-        self.statuses = [models copy];
+        self.statusFrames = [models copy];
     }
-    return _statuses;
+    return _statusFrames;
+}
+
+#pragma mark - 代理方法
+// 这个方法比cellForRowAtIndexPath先调用，即创建cell的时候得先知道它的高度，所以高度必须先计算
+// 所以在懒加载的时候获取微博的数据立即去计算行高
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // 取出相应行的frame模型
+    JHWeiboFrame *wbf = self.statusFrames[indexPath.row];
+    NSLog(@"hright = %f",wbf.cellHeight);
+    return wbf.cellHeight;
 }
 
 -(BOOL)prefersStatusBarHidden
